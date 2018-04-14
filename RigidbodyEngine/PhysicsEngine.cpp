@@ -56,20 +56,14 @@ void PhysicsEngine::Update(double deltaTime) {
 				// Collider one setup
 				Collider::AABB colOneBB = boxOne->GetBoundingBox();
 				Transform* colOneT = (Transform*)(*entOne)->GetComponent("Transform");
-				XMVECTOR colOneMin = XMVector3Transform(colOneBB.MinPoint, colOneT->EvaluateTransform());
-				XMVECTOR colOneMax = XMVector3Transform(colOneBB.MaxPoint, colOneT->EvaluateTransform());
 				// Collider two setup
 				Collider::AABB colTwoBB = boxTwo->GetBoundingBox();
 				Transform* colTwoT = (Transform*)(*entTwo)->GetComponent("Transform");
-				XMVECTOR colTwoMin = XMVector3Transform(colTwoBB.MinPoint, colTwoT->EvaluateTransform());
-				XMVECTOR colTwoMax = XMVector3Transform(colTwoBB.MaxPoint, colTwoT->EvaluateTransform());
 				// Check collisions
 				Collider::AABB col = MinkowskiDiff(colOneBB.MinPoint, colOneBB.MaxPoint, colTwoBB.MinPoint, colTwoBB.MaxPoint);
 				col.MinPoint = XMVector3Transform(col.MinPoint, colOneT->EvaluateTransform());
 				col.MaxPoint = XMVector3Transform(col.MaxPoint, colOneT->EvaluateTransform());
 				if (MikowskiCollide(col, colTwoT->GetOrigin())) {
-					// Impulse resolution (constraint)
-					OutputDebugString("Collision detected.\n");
 					float minDist = std::abs(XMVectorGetX(colTwoT->GetOrigin()) - XMVectorGetX(col.MinPoint));
 					XMVECTOR boundsPoint = XMVectorSet(-minDist, 0.0f, 0.0f, 1.0f);
 					if (std::abs(XMVectorGetX(col.MaxPoint) - XMVectorGetX(colTwoT->GetOrigin())) < minDist)
@@ -96,21 +90,28 @@ void PhysicsEngine::Update(double deltaTime) {
 						minDist = std::abs(XMVectorGetZ(colTwoT->GetOrigin()) - XMVectorGetZ(col.MinPoint));
 						boundsPoint = XMVectorSet(0.0f, 0.0f, -minDist, 1.0f);
 					}
-					//colOneT->Translate(XMVectorGetX(boundsPoint) * 0.01, XMVectorGetY(boundsPoint) * 0.01, XMVectorGetZ(boundsPoint) * 0.01);
-					colOneT->Translate(XMVectorGetX(boundsPoint), XMVectorGetY(boundsPoint), XMVectorGetZ(boundsPoint));
 					Rigidbody* one = (Rigidbody*)(*entOne)->GetComponent("Rigidbody");
 					Rigidbody* two = (Rigidbody*)(*entTwo)->GetComponent("Rigidbody");
-					if (two->IsKinematic()) {
+					if (one->IsKinematic()) {
 						one->SetVelocity(XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f));
 						two->SetVelocity(XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f));
+						colTwoT->Translate(-XMVectorGetX(boundsPoint), -XMVectorGetY(boundsPoint), -XMVectorGetZ(boundsPoint));
 					}
-					else if (one->IsKinematic()) {
+					else if (two->IsKinematic()) {
+						one->SetVelocity(XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f));
 						two->SetVelocity(XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f));
+						colOneT->Translate(XMVectorGetX(boundsPoint), XMVectorGetY(boundsPoint), XMVectorGetZ(boundsPoint));
 					}
-					//((Rigidbody*)(*entOne)->GetComponent("Rigidbody"))->SetVelocity(((Rigidbody*)(*entOne)->GetComponent("Rigidbody"))->GetVelocity());
-				}
-				else {
-					OutputDebugString("Collision not detected.\n");
+					else {
+						// Add velocity to colliding blocks
+						XMVECTOR temp = one->GetVelocity();
+						XMVECTOR* forceOne = new XMVECTOR();
+						*forceOne = one->GetVelocity();
+						XMVECTOR* forceTwo = new XMVECTOR();
+						*forceTwo = two->GetVelocity();
+						one->AddForce(forceTwo);
+						two->AddForce(forceOne);
+					}
 				}
 			}
 		}
