@@ -71,33 +71,33 @@ void PhysicsEngine::Update(double deltaTime) {
 					// Impulse resolution (constraint)
 					OutputDebugString("Collision detected.\n");
 					float minDist = std::abs(XMVectorGetX(colTwoT->GetOrigin()) - XMVectorGetX(col.MinPoint));
-					XMVECTOR boundsPoint = XMVectorSet(XMVectorGetX(col.MinPoint), XMVectorGetY(colTwoT->GetOrigin()), XMVectorGetZ(colTwoT->GetOrigin()), 1.0f);
+					XMVECTOR boundsPoint = XMVectorSet(-minDist, 0.0f, 0.0f, 1.0f);
 					if (std::abs(XMVectorGetX(col.MaxPoint) - XMVectorGetX(colTwoT->GetOrigin())) < minDist)
 					{
 						minDist = std::abs(XMVectorGetX(col.MaxPoint) - XMVectorGetX(colTwoT->GetOrigin()));
-						boundsPoint = XMVectorSet(XMVectorGetX(col.MaxPoint), XMVectorGetY(colTwoT->GetOrigin()), XMVectorGetZ(colTwoT->GetOrigin()), 1.0f);
+						boundsPoint = XMVectorSet(minDist, 0.0f, 0.0f, 1.0f);
 					}
 					if (std::abs(XMVectorGetY(colTwoT->GetOrigin()) - XMVectorGetY(col.MinPoint)) < minDist) {
 						minDist = std::abs(XMVectorGetY(colTwoT->GetOrigin()) - XMVectorGetY(col.MinPoint));
-						boundsPoint = XMVectorSet(XMVectorGetX(colTwoT->GetOrigin()), XMVectorGetY(col.MinPoint), XMVectorGetZ(colTwoT->GetOrigin()), 1.0f);
+						boundsPoint = XMVectorSet(0.0f, minDist, 0.0f, 1.0f);
 					}
 					if (std::abs(XMVectorGetY(colTwoT->GetOrigin()) - XMVectorGetY(col.MaxPoint)) < minDist)
 					{
 						minDist = std::abs(XMVectorGetY(colTwoT->GetOrigin()) - XMVectorGetY(col.MaxPoint));
-						boundsPoint = XMVectorSet(XMVectorGetX(colTwoT->GetOrigin()), XMVectorGetY(col.MaxPoint), XMVectorGetZ(colTwoT->GetOrigin()), 1.0f);
+						boundsPoint = XMVectorSet(0.0f, minDist, 0.0f, 1.0f);
 					}
 					if (std::abs(XMVectorGetZ(colTwoT->GetOrigin()) - XMVectorGetZ(col.MaxPoint)) < minDist)
 					{
 						minDist = std::abs(XMVectorGetZ(colTwoT->GetOrigin()) - XMVectorGetZ(col.MaxPoint));
-						boundsPoint = XMVectorSet(XMVectorGetX(colTwoT->GetOrigin()), XMVectorGetY(colTwoT->GetOrigin()), XMVectorGetZ(col.MaxPoint), 1.0f);
+						boundsPoint = XMVectorSet(0.0f, 0.0f, -minDist, 1.0f);
 					}
 					if (std::abs(XMVectorGetZ(colTwoT->GetOrigin()) - XMVectorGetZ(col.MinPoint)) < minDist)
 					{
 						minDist = std::abs(XMVectorGetZ(colTwoT->GetOrigin()) - XMVectorGetZ(col.MinPoint));
-						boundsPoint = XMVectorSet(XMVectorGetX(colTwoT->GetOrigin()), XMVectorGetY(colTwoT->GetOrigin()), XMVectorGetZ(col.MinPoint), 1.0f);
+						boundsPoint = XMVectorSet(0.0f, 0.0f, -minDist, 1.0f);
 					}
-					//colOneT->Translate(XMVectorGetX(boundsPoint), XMVectorGetY(boundsPoint), XMVectorGetZ(boundsPoint));
-					colOneT->SetOrigin(boundsPoint);
+					//colOneT->Translate(XMVectorGetX(boundsPoint) * 0.01, XMVectorGetY(boundsPoint) * 0.01, XMVectorGetZ(boundsPoint) * 0.01);
+					colOneT->Translate(XMVectorGetX(boundsPoint), XMVectorGetY(boundsPoint), XMVectorGetZ(boundsPoint));
 					Rigidbody* one = (Rigidbody*)(*entOne)->GetComponent("Rigidbody");
 					Rigidbody* two = (Rigidbody*)(*entTwo)->GetComponent("Rigidbody");
 					if (two->IsKinematic()) {
