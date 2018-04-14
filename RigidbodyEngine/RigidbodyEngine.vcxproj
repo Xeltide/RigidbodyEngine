@@ -76,7 +76,12 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>C:\Users\Xeltide\Desktop\Archive\BCIT\Term 4\COMP 4995\RigidbodyEngine\Debug;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>C:\Users\Xeltide\Desktop\Archive\BCIT\Term 4\COMP 4995\RigidbodyEngine\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>Effects11d.lib;d3d11.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -115,6 +120,57 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BasicShader.cpp" />
+    <ClCompile Include="BoxCollider.cpp" />
+    <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="CameraScript.cpp" />
+    <ClCompile Include="Collider.cpp" />
+    <ClCompile Include="Component.cpp" />
+    <ClCompile Include="Cube.cpp" />
+    <ClCompile Include="DemoScene.cpp" />
+    <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="EntityManager.cpp" />
+    <ClCompile Include="GameEngine.cpp" />
+    <ClCompile Include="GameWindow.cpp" />
+    <ClCompile Include="MainCamera.cpp" />
+    <ClCompile Include="MeshRenderer.cpp" />
+    <ClCompile Include="PhysicsEngine.cpp" />
+    <ClCompile Include="PhysicsStrategy.cpp" />
+    <ClCompile Include="Program.cpp" />
+    <ClCompile Include="RenderEngine.cpp" />
+    <ClCompile Include="Rigidbody.cpp" />
+    <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="Script.cpp" />
+    <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="ShaderManager.cpp" />
+    <ClCompile Include="Transform.cpp" />
+    <ClCompile Include="Window.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="BasicShader.h" />
+    <ClInclude Include="BoxCollider.h" />
+    <ClInclude Include="Camera.h" />
+    <ClInclude Include="CameraScript.h" />
+    <ClInclude Include="Collider.h" />
+    <ClInclude Include="Component.h" />
+    <ClInclude Include="Cube.h" />
+    <ClInclude Include="DemoScene.h" />
+    <ClInclude Include="Entity.h" />
+    <ClInclude Include="EntityManager.h" />
+    <ClInclude Include="GameEngine.h" />
+    <ClInclude Include="GameWindow.h" />
+    <ClInclude Include="MainCamera.h" />
+    <ClInclude Include="MeshRenderer.h" />
+    <ClInclude Include="PhysicsEngine.h" />
+    <ClInclude Include="PhysicsStrategy.h" />
+    <ClInclude Include="RenderEngine.h" />
+    <ClInclude Include="Rigidbody.h" />
+    <ClInclude Include="Scene.h" />
+    <ClInclude Include="Script.h" />
+    <ClInclude Include="Shader.h" />
+    <ClInclude Include="ShaderManager.h" />
+    <ClInclude Include="Transform.h" />
+    <ClInclude Include="Window.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
